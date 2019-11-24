@@ -69,16 +69,10 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = seconds + minutes * 6
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
 fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
-    println(vershoks)
-    println(sagenes)
-    println(arshins)
     val v = 4.445
     val verInSm = vershoks * v
-    println(verInSm)
     val sagInSm = sagenes * v * 48
-    println(sagInSm)
     val arcInSm = (arshins * v * 48) / 3
-    println(arcInSm)
     return (verInSm + sagInSm + arcInSm) / 100
 }
 
@@ -121,8 +115,9 @@ fun thirdDigit(number: Int): Int = number % 1000 / 100
 fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int {
     val diffH = (max(hoursDepart, hoursArrive) - min(hoursDepart, hoursArrive)) * 60
     val diffM = (max(minutesDepart, minutesArrive) - min(minutesDepart, minutesArrive))
-    return diffH - diffM
+    return max(diffH, diffM) - min(diffH, diffM)
 }
+
 
 /**
  * Простая
