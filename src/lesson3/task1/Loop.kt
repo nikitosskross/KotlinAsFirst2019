@@ -114,7 +114,6 @@ fun lcm(m: Int, n: Int): Int {
     }
     return result
 }
-
 /**
  * Простая
  *
