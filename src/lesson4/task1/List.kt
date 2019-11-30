@@ -4,6 +4,8 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import lesson3.task1.digitNumber
+import lesson3.task1.revert
 import kotlin.math.min
 import kotlin.math.sqrt
 
@@ -242,7 +244,14 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    var result = mutableListOf<Int>()
+    var digits = revert(n).toString()
+    for (i in 0 until digitNumber(n)) {
+        result.add(digits[i].toInt()*Math.pow(base.toDouble(),i.toDouble()).toInt())
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -297,4 +306,112 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun getDoubleDigitString(n: Int): String {
+    return when (n) {
+        10 -> " десять"
+        11 -> " одинадцать"
+        12 -> " двенадцать"
+        13 -> " тринадцать"
+        14 -> " четырнадцать"
+        15 -> " пятнадцать"
+        16 -> " шестнадцать"
+        17 -> " семнадцать"
+        18 -> " восемнадцать"
+        19 -> " девятнадцать"
+        else -> ""
+    }
+}
+
+fun getFirstDigitString(n: Int): String {
+    return when (n) {
+        1 -> " один"
+        2 -> " два"
+        3 -> " три"
+        4 -> " четыре"
+        5 -> " пять"
+        6 -> " шесть"
+        7 -> " семь"
+        8 -> " восемь"
+        9 -> " девять"
+        else -> ""
+    }
+}
+
+fun getSecondDigitString(n: Int): String {
+    return when (n) {
+        2 -> " двадцать"
+        3 -> " тридцать"
+        4 -> " сорок"
+        5 -> " пятьдесят"
+        6 -> " шестьдесят"
+        7 -> " семьдесят"
+        8 -> " восемьдесят"
+        9 -> " девяносто"
+        else -> ""
+    }
+}
+
+fun getThirdDigitString(n: Int): String {
+    return when (n) {
+        1 -> " сто"
+        2 -> " двести"
+        3 -> " триста"
+        4 -> " четыреста"
+        5 -> " пятьсот"
+        6 -> " шестьсот"
+        7 -> " семьсот"
+        8 -> " восемьсот"
+        9 -> " девятьсот"
+        else -> ""
+    }
+}
+
+fun getThousand(n: Int): String {
+    if (n in 5..19 || n % 10 == 0) return " тысяч"
+    if (n % 10 == 1) return " тысяча"
+    if (n % 10 in 2..4) return " тысячи"
+    return " тысяч"
+}
+
+fun getResult(s: String): String = s.substring(1, s.length)
+
+fun russian(n: Int): String {
+    var result = ""
+
+    if (n in 1..9) return getResult(getFirstDigitString(n))
+
+    if (n % 100 in 10..19) {
+        result = getDoubleDigitString(n % 100) + result
+    } else {
+        var firstDigit = n % 10
+        var secondDigit = n % 100 / 10
+        result = getSecondDigitString(secondDigit) + getFirstDigitString(firstDigit) + result
+    }
+
+    if (n in 10..99) return getResult(result)
+
+    result = getThirdDigitString(n % 1000 / 100) + result
+
+    if (n in 100..999) return getResult(result)
+
+    val thousand = getThousand(n % 100000 / 1000)
+
+    if (n % 100000 / 1000 in 10..19) {
+        result = getDoubleDigitString(n % 100000 / 1000) + thousand + result
+    } else {
+        var fouredDigit = n % 10000 / 1000
+        var fivedDigit = n % 100000 / 10000
+        var fouredString = when (fouredDigit) {
+            1 -> " одна"
+            2 -> " две"
+            else -> getFirstDigitString(fouredDigit)
+        }
+        result = getSecondDigitString(fivedDigit) + fouredString + thousand + result
+    }
+
+    if (n in 1000..99999) return getResult(result)
+
+    result = getThirdDigitString(n / 100000) + result
+
+    return getResult(result)
+}
