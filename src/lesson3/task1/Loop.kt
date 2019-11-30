@@ -211,26 +211,7 @@ fun collatzSteps(x: Int): Int {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double {
-    var n = 1
-    var fac = 1
-    var powered = x
-    var mem = x
-    var sum = x
-    var minus = 1
-    while (abs(mem) > eps) {
-        minus *= -1
-        powered = minus * x.pow(n.toDouble())
-        fac = factorial(n).toInt()
-        n += 2
-        mem = powered / fac
-        sum += mem
-        println(sum)
-    }
-//println(sum)
-    return sum
-}
-
+fun sin(x: Double, eps: Double): Double = TODO()
 /**
  * Средняя
  *
@@ -270,10 +251,8 @@ fun revert(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun isPalindrome(n: Int): Boolean {
-    println("start")
     if (digitNumber(n) == 1) return true
     val dn = digitNumber(n) / 2
-    println(dn)
     val r = 10.0.pow(dn.toDouble()).toInt()
     var firstPart = n / r
     val secondPart = revert(n % r)
