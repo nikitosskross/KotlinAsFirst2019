@@ -309,7 +309,7 @@ fun roman(n: Int): String = TODO()
 fun getDoubleDigitString(n: Int): String {
     return when (n) {
         10 -> " десять"
-        11 -> " одинадцать"
+        11 -> " одиннадцать"
         12 -> " двенадцать"
         13 -> " тринадцать"
         14 -> " четырнадцать"
