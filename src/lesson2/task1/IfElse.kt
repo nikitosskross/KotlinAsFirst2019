@@ -67,7 +67,7 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String {
-    var string: String = age.toString()
+    var string = age.toString()
     val cond = (age / 10) % 10 != 1
     string += when {
         age % 10 == 1 && cond -> " год"
@@ -89,10 +89,10 @@ fun timeForHalfWay(
     t2: Double, v2: Double,
     t3: Double, v3: Double
 ): Double {
-    var s1 = t1 * v1
-    var s2 = t2 * v2
-    var s3 = t3 * v3
-    var halfWay = (s1 + s2 + s3) / 2
+    val s1 = t1 * v1
+    val s2 = t2 * v2
+    val s3 = t3 * v3
+    val halfWay = (s1 + s2 + s3) / 2
     return when {
         halfWay <= s1 -> halfWay / v1
         (halfWay > s1) && (halfWay <= s1 + s2) -> t1 + (halfWay - s1) / v2
@@ -114,12 +114,12 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-    var threatense1 = rookX1 == kingX || rookY1 == kingY
-    var threatense2 = rookX2 == kingX || rookY2 == kingY
+    val threatens1 = rookX1 == kingX || rookY1 == kingY
+    val threatens2 = rookX2 == kingX || rookY2 == kingY
     return when {
-        threatense1 && threatense2 -> 3
-        threatense1 -> 1
-        threatense2 -> 2
+        threatens1 && threatens2 -> 3
+        threatens1 -> 1
+        threatens2 -> 2
         else -> 0
     }
 }
@@ -135,29 +135,23 @@ fun whichRookThreatens(
  * Считать, что ладья и слон не могут загораживать друг друга.
  */
 
-fun rookThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
-    return x1 == x2 || y1 == y2
-}
+fun rookThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = x1 == x2 || y1 == y2
 
-fun bishopThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
-    return abs(x1 - x2) == abs(y1 - y2)
-}
+fun bishopThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = abs(x1 - x2) == abs(y1 - y2)
 
 fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
 ): Int {
-    var threatenseBishop = bishopThreatens(bishopX, bishopY, kingX, kingY)
-    var
-
-            threatenseRook = rookThreatens(rookX, rookY, kingX, kingY)
-    var bishopIntersectRook = bishopThreatens(bishopX, bishopY, rookX, rookY) ||
+    val threatensBishop = bishopThreatens(bishopX, bishopY, kingX, kingY)
+    val threatensRook = rookThreatens(rookX, rookY, kingX, kingY)
+    val bishopIntersectRook = bishopThreatens(bishopX, bishopY, rookX, rookY) ||
             rookThreatens(rookX, rookY, bishopX, bishopY)
     return when {
-        threatenseBishop && threatenseRook && !bishopIntersectRook -> 3
-        threatenseRook && !bishopIntersectRook -> 1
-        threatenseBishop && !bishopIntersectRook -> 2
+        threatensBishop && threatensRook && !bishopIntersectRook -> 3
+        threatensRook && !bishopIntersectRook -> 1
+        threatensBishop && !bishopIntersectRook -> 2
         else -> 0
     }
 }
@@ -187,7 +181,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
             b1 = c
         }
     }
-    var cos = (sqr(a1) + sqr(b1) - sqr(c1)) / (2 * a1 * b1)
+    val cos = (sqr(a1) + sqr(b1) - sqr(c1)) / (2 * a1 * b1)
     return when {
         (c >= (a + b)) || (b >= (a + c)) || (a >= (b + c)) -> -1
         cos > 0.0 -> 0
@@ -205,7 +199,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    var intersection = max(0, min(b, d)) - max(a, c)
+    val intersection = min(b, d) - max(a, c)
     if (intersection < 0) return -1
     return intersection
 }

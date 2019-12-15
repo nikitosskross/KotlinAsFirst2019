@@ -7,6 +7,7 @@ import lesson1.task1.sqr
 import lesson3.task1.digitNumber
 import lesson3.task1.revert
 import kotlin.math.min
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -173,7 +174,7 @@ fun times(a: List<Int>, b: List<Int>): Int {
     var c = 0
     if (a.isNotEmpty() && b.isNotEmpty()) {
         for (i in 0 until min(a.size, b.size)) {
-            c += a.get(i) * b.get(i)
+            c += a[i] * b[i]
         }
     }
     return c
@@ -188,11 +189,9 @@ fun times(a: List<Int>, b: List<Int>): Int {
  * Значение пустого многочлена равно 0 при любом x.
  */
 fun polynom(p: List<Int>, x: Int): Int {
-    var power = 0
     var sum = 0
-    for (k in p) {
-        sum += k * Math.pow(x.toDouble(), power.toDouble()).toInt()
-        power++
+    for ((power, k) in p.withIndex()) {
+        sum += k * x.toDouble().pow(power.toDouble()).toInt()
     }
     return sum
 }
@@ -209,12 +208,10 @@ fun polynom(p: List<Int>, x: Int): Int {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    if (list.isNotEmpty()) {
-        var elemSum=0
-        for (i in list.indices) {
-            elemSum += list[i]
-            list[i] = elemSum
-        }
+    var elemSum = 0
+    for (i in list.indices) {
+        elemSum += list[i]
+        list[i] = elemSum
     }
     return list
 }
@@ -245,11 +242,13 @@ fun factorizeToString(n: Int): String = TODO()
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    var result = mutableListOf<Int>()
-    var digits = revert(n).toString()
-    for (i in 0 until digitNumber(n)) {
-        result.add(digits[i].toInt()*Math.pow(base.toDouble(),i.toDouble()).toInt())
-    }
+    val result = mutableListOf<Int>()
+    var num = n
+    do {
+        result.add(num % base)
+        num /= base
+    } while (num >= 1)
+    result.reverse()
     return result
 }
 
@@ -264,7 +263,17 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+
+fun getChar(n: Int): String = (n + 87).toChar().toString()
+
+fun convertToString(n: Int, base: Int): String {
+    var result = ""
+    for (dig in convert(n, base)) {
+        val digit = if (dig > 9) getChar(dig) else dig.toString()
+        result += digit
+    }
+    return result
+}
 
 /**
  * Средняя
@@ -273,7 +282,13 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var result = 0.0
+    for (i in digits.indices) {
+        result += digits[digits.size - 1 - i] * base.toDouble().pow(i.toDouble())
+    }
+    return result.toInt()
+}
 
 /**
  * Сложная
@@ -287,7 +302,17 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+
+fun getDigit(ch: Char) = (ch - 87).toInt()
+
+fun decimalFromString(str: String, base: Int): Int {
+    val digits = mutableListOf<Int>()
+    for (ch in str.toCharArray()) {
+        val dig = if (ch.isDigit()) ch.toString().toInt() else getDigit(ch)
+        digits.add(dig)
+    }
+    return decimal(digits, base)
+}
 
 /**
  * Сложная
@@ -306,65 +331,6 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun getDoubleDigitString(n: Int): String {
-    return when (n) {
-        10 -> " десять"
-        11 -> " одиннадцать"
-        12 -> " двенадцать"
-        13 -> " тринадцать"
-        14 -> " четырнадцать"
-        15 -> " пятнадцать"
-        16 -> " шестнадцать"
-        17 -> " семнадцать"
-        18 -> " восемнадцать"
-        19 -> " девятнадцать"
-        else -> ""
-    }
-}
-
-fun getFirstDigitString(n: Int): String {
-    return when (n) {
-        1 -> " один"
-        2 -> " два"
-        3 -> " три"
-        4 -> " четыре"
-        5 -> " пять"
-        6 -> " шесть"
-        7 -> " семь"
-        8 -> " восемь"
-        9 -> " девять"
-        else -> ""
-    }
-}
-
-fun getSecondDigitString(n: Int): String {
-    return when (n) {
-        2 -> " двадцать"
-        3 -> " тридцать"
-        4 -> " сорок"
-        5 -> " пятьдесят"
-        6 -> " шестьдесят"
-        7 -> " семьдесят"
-        8 -> " восемьдесят"
-        9 -> " девяносто"
-        else -> ""
-    }
-}
-
-fun getThirdDigitString(n: Int): String {
-    return when (n) {
-        1 -> " сто"
-        2 -> " двести"
-        3 -> " триста"
-        4 -> " четыреста"
-        5 -> " пятьсот"
-        6 -> " шестьсот"
-        7 -> " семьсот"
-        8 -> " восемьсот"
-        9 -> " девятьсот"
-        else -> ""
-    }
-}
 
 fun getThousand(n: Int): String {
     if (n in 5..19 || n % 10 == 0) return " тысяч"
@@ -376,15 +342,21 @@ fun getThousand(n: Int): String {
 fun getResult(s: String): String = s.substring(1, s.length)
 
 fun russian(n: Int): String {
+    val doubleDigit = listOf<String>("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
+    val firstDigit = listOf<String>("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    val secondDigit = listOf<String>("", "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
+    val thirdDigit = listOf<String>("", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
     var result = ""
 
-    if (n in 1..9) return getResult(getFirstDigitString(n))
+    if (n in 1..9) return getResult(FirstDigit(n))
 
     if (n % 100 in 10..19) {
-        result = getDoubleDigitString(n % 100) + result
+        print(n % 100)
+        println(n % 100 % 10)
+        result = doubleDigit[n % 100 % 10] + result;
     } else {
-        var firstDigit = n % 10
-        var secondDigit = n % 100 / 10
+        val firstDigit = n % 10
+        val secondDigit = n % 100 / 10
         result = getSecondDigitString(secondDigit) + getFirstDigitString(firstDigit) + result
     }
 
@@ -399,9 +371,9 @@ fun russian(n: Int): String {
     if (n % 100000 / 1000 in 10..19) {
         result = getDoubleDigitString(n % 100000 / 1000) + thousand + result
     } else {
-        var fouredDigit = n % 10000 / 1000
-        var fivedDigit = n % 100000 / 10000
-        var fouredString = when (fouredDigit) {
+        val fouredDigit = n % 10000 / 1000
+        val fivedDigit = n % 100000 / 10000
+        val fouredString = when (fouredDigit) {
             1 -> " одна"
             2 -> " две"
             else -> getFirstDigitString(fouredDigit)

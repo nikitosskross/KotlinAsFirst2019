@@ -103,14 +103,16 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var max = max(m, n)
-    var min = min(m, n)
-    var result = max
-    for (i in min..max * min) {
-        if (i % m == 0 && i % n == 0) {
-            result = i
-            break
-        }
+    if (m == 0 || n == 0) {
+        return 0
+    }
+    val absM: Int = abs(m)
+    val absN: Int = abs(n)
+    val absMax = max(absM, absN)
+    val absMin = min(absM, absN)
+    var result = absMax
+    while (result % absMin != 0) {
+        result += absMax
     }
     return result
 }
@@ -121,6 +123,7 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
+    if (isPrime(n)) return n
     for (i in 2..n) {
         if (n % i == 0) return i
     }
@@ -162,7 +165,6 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    isSquare(0)
     if (m == 1 || n == 1) return true
     for (i in min(n, m)..max(n, m)) {
         if (isSquare(i)) return true
@@ -251,17 +253,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean {
-    if (digitNumber(n) == 1) return true
-    val dn = digitNumber(n) / 2
-    val r = 10.0.pow(dn.toDouble()).toInt()
-    var firstPart = n / r
-    val secondPart = revert(n % r)
-    if (digitNumber(n) % 2 != 0) {
-        firstPart /= 10
-    }
-    return firstPart == secondPart
-}
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
  * Средняя
@@ -292,25 +284,28 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int {
+
+fun find(n: Int, squareTask: Boolean): Int {
     var sequenceCount = 0
     var i = 0
-    val result: Int
     while (true) {
         i++
-        var k = i * i
+        var k: Int = if (squareTask) {
+            i * i
+        } else fib(i)
         sequenceCount += digitNumber(k)
         if (sequenceCount >= n) {
             while (sequenceCount != n) {
                 k /= 10
                 sequenceCount--
             }
-            result = k % 10
-            break
+            return k % 10
         }
     }
-    return result
 }
+
+
+fun squareSequenceDigit(n: Int): Int = find(n, true)
 
 
 /**
@@ -322,22 +317,4 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int {
-    var sequenceCount = 0
-    var i = 0
-    val result: Int
-    while (true) {
-        i++
-        var k = fib(i)
-        sequenceCount += digitNumber(k)
-        if (sequenceCount >= n) {
-            while (sequenceCount != n) {
-                k /= 10
-                sequenceCount--
-            }
-            result = k % 10
-            break
-        }
-    }
-    return result
-}
+fun fibSequenceDigit(n: Int): Int = find(n, false)

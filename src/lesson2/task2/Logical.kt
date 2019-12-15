@@ -22,10 +22,10 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
 fun isNumberHappy(number: Int): Boolean {
-    var n1 = number / 1000
-    var n2 = number / 100 % 10
-    var n3 = number % 100 / 10
-    var n4 = number % 10
+    val n1 = number / 1000
+    val n2 = number / 100 % 10
+    val n3 = number % 100 / 10
+    val n4 = number % 10
     return n1 + n2 == n3 + n4
 }
 
@@ -36,9 +36,8 @@ fun isNumberHappy(number: Int): Boolean {
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
-    return rookThreatens(x1, y1, x2, y2) || bishopThreatens(x1, y1, x2, y2)
-}
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
+    rookThreatens(x1, y1, x2, y2) || bishopThreatens(x1, y1, x2, y2)
 
 
 /**
@@ -48,20 +47,20 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
 
-fun equalsToOneOf(n: Int, string: String): Boolean {
-    for (s in string.split(",")) {
-        if (s.equals(n.toString())) return true
-    }
-    return false
+fun isLeap(year: Int): Boolean {
+    var d = 4
+    if (year % 100 == 0) d = 400
+    return year % d == 0
 }
 
 fun daysInMonth(month: Int, year: Int): Int {
-    return when {
-        month == 2 -> if (year % 4 == 0) 29 else 28
-        equalsToOneOf(month, "4,6,9,11") -> 30
+    return when (month) {
+        2 -> if (isLeap(year)) 29 else 28
+        4, 6, 9, 11 -> 30
         else -> 31
     }
 }
+
 /**
  * Средняя
  *

@@ -2,6 +2,9 @@
 
 package lesson1.task1
 
+import lesson3.task1.digitNumber
+import java.lang.Math.pow
+import java.lang.Math.toRadians
 import kotlin.math.*
 
 /**
@@ -83,9 +86,9 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
 fun angleInRadian(deg: Int, min: Int, sec: Int): Double {
-    val minInDeg: Double = min / 60.0
-    val secInDeg: Double = sec / 3600.0
-    return Math.toRadians(minInDeg + secInDeg + deg)
+    val minInDeg = min / 60.0
+    val secInDeg = sec / 3600.0
+    return toRadians(minInDeg + secInDeg + deg)
 }
 
 /**
@@ -115,7 +118,7 @@ fun thirdDigit(number: Int): Int = number % 1000 / 100
 fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int {
     val diffH = (max(hoursDepart, hoursArrive) - min(hoursDepart, hoursArrive)) * 60
     val diffM = (max(minutesDepart, minutesArrive) - min(minutesDepart, minutesArrive))
-    return max(diffH, diffM) - min(diffH, diffM)
+    return diffH - diffM
 }
 
 
@@ -140,4 +143,14 @@ fun accountInThreeYears(initial: Int, percent: Int): Double {
  * Пользователь задает целое трехзначное число (например, 478).
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int = number.toString().reversed().toInt()
+fun numberRevert(number: Int): Int {
+    var result = 0
+    var n = number
+    val length = digitNumber(number)
+    for (i in 1..length) {
+        val p = length - i
+        result += n % 10 * pow(10.0, p.toDouble()).toInt()
+        n /= 10
+    }
+    return result
+}
