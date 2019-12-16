@@ -106,8 +106,8 @@ fun lcm(m: Int, n: Int): Int {
     if (m == 0 || n == 0) {
         return 0
     }
-    val absM: Int = abs(m)
-    val absN: Int = abs(n)
+    val absM = abs(m)
+    val absN = abs(n)
     val absMax = max(absM, absN)
     val absMin = min(absM, absN)
     var result = absMax
@@ -290,7 +290,7 @@ fun find(n: Int, squareTask: Boolean): Int {
     var i = 0
     while (true) {
         i++
-        var k: Int = if (squareTask) {
+        var k = if (squareTask) {
             i * i
         } else fib(i)
         sequenceCount += digitNumber(k)

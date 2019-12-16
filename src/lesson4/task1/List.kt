@@ -342,48 +342,46 @@ fun getThousand(n: Int): String {
 fun getResult(s: String): String = s.substring(1, s.length)
 
 fun russian(n: Int): String {
-    val doubleDigit = listOf<String>("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
-    val firstDigit = listOf<String>("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
-    val secondDigit = listOf<String>("", "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
-    val thirdDigit = listOf<String>("", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
+    val doubleDigit = listOf<String>(" десять", " одиннадцать", " двенадцать", " тринадцать", " четырнадцать", " пятнадцать", " шестнадцать", " семнадцать", " восемнадцать", " девятнадцать")
+    val firstDigit = listOf<String>("", " один", " два", " три", " четыре", " пять", " шесть", " семь", " восемь", " девять")
+    val secondDigit = listOf<String>("", "", " двадцать", " тридцать", " сорок", " пятьдесят", " шестьдесят", " семьдесят", " восемьдесят", " девяносто")
+    val thirdDigit = listOf<String>("", " сто", " двести", " триста", " четыреста", " пятьсот", " шестьсот", " семьсот", " восемьсот", " девятьсот")
     var result = ""
 
-    if (n in 1..9) return getResult(FirstDigit(n))
+    if (n in 1..9) return getResult(firstDigit[n])
 
     if (n % 100 in 10..19) {
-        print(n % 100)
-        println(n % 100 % 10)
         result = doubleDigit[n % 100 % 10] + result;
     } else {
-        val firstDigit = n % 10
-        val secondDigit = n % 100 / 10
-        result = getSecondDigitString(secondDigit) + getFirstDigitString(firstDigit) + result
+        val firstDigitNumber = n % 10
+        val secondDigitNumber = n % 100 / 10
+        result = secondDigit[secondDigitNumber] + firstDigit[firstDigitNumber] + result
     }
 
     if (n in 10..99) return getResult(result)
 
-    result = getThirdDigitString(n % 1000 / 100) + result
+    result = thirdDigit[n % 1000 / 100] + result
 
     if (n in 100..999) return getResult(result)
 
     val thousand = getThousand(n % 100000 / 1000)
 
     if (n % 100000 / 1000 in 10..19) {
-        result = getDoubleDigitString(n % 100000 / 1000) + thousand + result
+        result = doubleDigit[n % 100000 / 1000 % 10] + thousand + result
     } else {
         val fouredDigit = n % 10000 / 1000
         val fivedDigit = n % 100000 / 10000
         val fouredString = when (fouredDigit) {
             1 -> " одна"
             2 -> " две"
-            else -> getFirstDigitString(fouredDigit)
+            else -> firstDigit[fouredDigit]
         }
-        result = getSecondDigitString(fivedDigit) + fouredString + thousand + result
+        result = secondDigit[fivedDigit] + fouredString + thousand + result
     }
 
     if (n in 1000..99999) return getResult(result)
 
-    result = getThirdDigitString(n / 100000) + result
+    result = thirdDigit[n / 100000] + result
 
     return getResult(result)
 }
