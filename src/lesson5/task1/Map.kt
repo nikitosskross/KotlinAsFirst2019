@@ -91,7 +91,16 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    val resultMap = mutableMapOf<Int, MutableList<String>>()
+    for ((name, mark) in grades) {
+        if (!resultMap.containsKey(mark) || resultMap[mark] == null) {
+            resultMap[mark] = mutableListOf()
+        }
+        resultMap[mark]!!.add(name)
+    }
+    return resultMap
+}
 
 /**
  * Простая
@@ -147,7 +156,32 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val resultMap = mutableMapOf<String, String>()
+    for ((nameA, phoneA) in mapA) {
+        for ((nameB, phoneB) in mapB) {
+            if (nameA == nameB) {
+                if (phoneA == phoneB) {
+                    resultMap[nameA] = phoneA
+                } else {
+                    if (!resultMap.containsKey(nameA)) {
+                        resultMap[nameA] = "$phoneA, $phoneB"
+                    } else {
+                        resultMap[nameA] += ", $phoneA, $phoneB"
+                    }
+                }
+            } else {
+                if (!resultMap.containsKey(nameA)) {
+                    resultMap[nameA] = phoneA
+                }
+                if (!resultMap.containsKey(nameB)) {
+                    resultMap[nameB] = phoneB
+                }
+            }
+        }
+    }
+    return resultMap
+}
 
 /**
  * Средняя

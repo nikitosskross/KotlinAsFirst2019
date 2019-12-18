@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+import java.nio.file.Files
 
 /**
  * Пример
@@ -53,7 +54,22 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val file = File(inputName)
+    val lines = Files.readAllLines(file.toPath())
+    val resultMap = mutableMapOf<String, Int>()
+    for (str in substrings) {
+        for (s in lines)
+            if (s.contains(str)) {
+                if (resultMap.containsKey(str)) {
+                    resultMap[str] = resultMap[str]!! + 1
+                } else {
+                    resultMap[str] = 1
+                }
+            }
+    }
+    return resultMap
+}
 
 
 /**
