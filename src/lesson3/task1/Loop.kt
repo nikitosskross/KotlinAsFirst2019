@@ -2,7 +2,6 @@
 
 package lesson3.task1
 
-import lesson1.task1.sqr
 import kotlin.math.*
 
 /**
@@ -201,7 +200,16 @@ fun collatzSteps(x: Int): Int {
     return i
 }
 
-
+/**
+ * Средняя
+ *
+ * Для заданного x рассчитать с заданной точностью eps
+ * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
+ * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю.
+ * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
+ * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
+ */
+fun sin(x: Double, eps: Double): Double = commonSinCos(eps, 3, x, x % (2 * PI))
 
 fun commonSinCos(eps: Double, i: Int, x: Double, firstMember: Double): Double {
     val firstNumber = x % (2 * PI)
@@ -218,16 +226,6 @@ fun commonSinCos(eps: Double, i: Int, x: Double, firstMember: Double): Double {
     }
     return result
 }
-/**
- * Средняя
- *
- * Для заданного x рассчитать с заданной точностью eps
- * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
- * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю.
- * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
- * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
- */
-fun sin(x: Double, eps: Double): Double = commonSinCos(eps, 3, x, x % (2 * PI))
 
 /**
  * Средняя
