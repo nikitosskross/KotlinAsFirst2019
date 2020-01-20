@@ -4,8 +4,6 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
-import lesson3.task1.digitNumber
-import lesson3.task1.revert
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -153,11 +151,9 @@ fun mean(list: List<Double>): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    if (list.isNotEmpty()) {
-        val mean = mean(list)
-        for (i in list.indices) {
-            list[i] -= mean
-        }
+    val mean = mean(list)
+    for (i in list.indices) {
+        list[i] -= mean
     }
     return list
 }

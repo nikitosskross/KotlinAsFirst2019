@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
 import kotlin.math.*
 
 /**
@@ -123,25 +124,21 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    if (isPrime(n)) return n
-    for (i in 2..n) {
-        if (n % i == 0) return i
-    }
-    return n
+    var result = 1
+    for (i in 2..n)
+        if (n % i == 0) {
+            result = i
+            break
+        }
+    return result
 }
-
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    for (i in n - 1 downTo 1) {
-        if (n % i == 0) return i
-    }
-    return n
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -204,6 +201,23 @@ fun collatzSteps(x: Int): Int {
     return i
 }
 
+
+
+fun commonSinCos(eps: Double, i: Int, x: Double, firstMember: Double): Double {
+    val firstNumber = x % (2 * PI)
+    var sequenceX = 1.0
+    var negativeX = -1
+    var result = firstMember
+    var ind = i
+
+    while (abs(sequenceX) >= eps) {
+        sequenceX = firstNumber.pow(ind) / factorial(ind) * negativeX
+        result += sequenceX
+        negativeX *= -1
+        ind += 2
+    }
+    return result
+}
 /**
  * Средняя
  *
@@ -213,7 +227,7 @@ fun collatzSteps(x: Int): Int {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double = commonSinCos(eps, 3, x, x % (2 * PI))
 
 /**
  * Средняя
@@ -224,7 +238,7 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double = commonSinCos(eps, 2, x, 1.0)
 
 /**
  * Средняя
