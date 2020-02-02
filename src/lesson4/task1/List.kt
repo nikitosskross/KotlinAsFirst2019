@@ -338,7 +338,7 @@ fun getThousand(n: Int): String {
 fun getResult(s: String): String = s.substring(1, s.length)
 
 fun russian(n: Int): String {
-    val doubleDigit = listOf<String>(
+    val doubleDigit = listOf(
         " десять",
         " одиннадцать",
         " двенадцать",
@@ -351,7 +351,7 @@ fun russian(n: Int): String {
         " девятнадцать"
     )
     val firstDigit =
-        listOf<String>(
+        listOf(
             "",
             " один",
             " два",
@@ -361,8 +361,9 @@ fun russian(n: Int): String {
             " шесть",
             " семь",
             " восемь",
-            " девять")
-    val secondDigit = listOf<String>(
+            " девять"
+        )
+    val secondDigit = listOf(
         "",
         "",
         " двадцать",
@@ -374,7 +375,7 @@ fun russian(n: Int): String {
         " восемьдесят",
         " девяносто"
     )
-    val thirdDigit = listOf<String>(
+    val thirdDigit = listOf(
         "",
         " сто",
         " двести",
@@ -390,12 +391,12 @@ fun russian(n: Int): String {
 
     if (n in 1..9) return getResult(firstDigit[n])
 
-    if (n % 100 in 10..19) {
-        result = doubleDigit[n % 100 % 10] + result;
+    result = if (n % 100 in 10..19) {
+        doubleDigit[n % 100 % 10] + result
     } else {
         val firstDigitNumber = n % 10
         val secondDigitNumber = n % 100 / 10
-        result = secondDigit[secondDigitNumber] + firstDigit[firstDigitNumber] + result
+        secondDigit[secondDigitNumber] + firstDigit[firstDigitNumber] + result
     }
 
     if (n in 10..99) return getResult(result)
@@ -406,8 +407,8 @@ fun russian(n: Int): String {
 
     val thousand = getThousand(n % 100000 / 1000)
 
-    if (n % 100000 / 1000 in 10..19) {
-        result = doubleDigit[n % 100000 / 1000 % 10] + thousand + result
+    result = if (n % 100000 / 1000 in 10..19) {
+        doubleDigit[n % 100000 / 1000 % 10] + thousand + result
     } else {
         val fouredDigit = n % 10000 / 1000
         val fivedDigit = n % 100000 / 10000
@@ -416,7 +417,7 @@ fun russian(n: Int): String {
             2 -> " две"
             else -> firstDigit[fouredDigit]
         }
-        result = secondDigit[fivedDigit] + fouredString + thousand + result
+        secondDigit[fivedDigit] + fouredString + thousand + result
     }
 
     if (n in 1000..99999) return getResult(result)
