@@ -3,7 +3,6 @@
 package lesson7.task1
 
 import java.io.File
-import java.nio.file.Files
 
 /**
  * Пример
@@ -55,22 +54,18 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  *
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
-    val file = File(inputName)
-    val lines = Files.readAllLines(file.toPath())
     val resultMap = mutableMapOf<String, Int>()
-    for (str in substrings) {
-        for (s in lines)
-            if (s.contains(str)) {
-                if (resultMap.containsKey(str)) {
-                    resultMap[str] = resultMap[str]!! + 1
-                } else {
-                    resultMap[str] = 1
-                }
-            }
+    val input = File(inputName).readText()
+    for (string in substrings) {
+        resultMap[string] = 0
+        var early = input.indexOf(string, 0, true)
+        while (early > -1) {
+            resultMap[string] = resultMap[string]!! + 1
+            early = input.indexOf(string, early + 1, true)
+        }
     }
     return resultMap
 }
-
 
 /**
  * Средняя
