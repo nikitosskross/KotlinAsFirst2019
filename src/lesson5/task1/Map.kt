@@ -94,10 +94,7 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val resultMap = mutableMapOf<Int, MutableList<String>>()
     for ((name, mark) in grades) {
-        if (!resultMap.containsKey(mark) || resultMap[mark] == null) {
-            resultMap[mark] = mutableListOf()
-        }
-        resultMap[mark]!!.add(name)
+        resultMap.getOrPut(mark, { mutableListOf() }).add(name)
     }
     return resultMap
 }
@@ -112,7 +109,12 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+    for ((name, key) in a) {
+        if (b[name] != key) return false
+    }
+    return true
+}
 
 /**
  * Простая
@@ -128,7 +130,12 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TODO()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): MutableMap<String, String> {
+    for ((name, key) in b) {
+        if (a[name] == key) a.remove(name)
+    }
+    return a
+}
 
 /**
  * Простая
@@ -137,7 +144,11 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TO
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
+    val aSet = a.toSet()
+    val bSet = b.toSet()
+    return aSet.filter { it in bSet }.toList()
+}
 
 /**
  * Средняя
@@ -159,26 +170,15 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
     val resultMap = mutableMapOf<String, String>()
     for ((nameA, phoneA) in mapA) {
-        for ((nameB, phoneB) in mapB) {
-            if (nameA == nameB) {
-                if (phoneA == phoneB) {
-                    resultMap[nameA] = phoneA
-                } else {
-                    if (!resultMap.containsKey(nameA)) {
-                        resultMap[nameA] = "$phoneA, $phoneB"
-                    } else {
-                        resultMap[nameA] += ", $phoneA, $phoneB"
-                    }
-                }
-            } else {
-                if (!resultMap.containsKey(nameA)) {
-                    resultMap[nameA] = phoneA
-                }
-                if (!resultMap.containsKey(nameB)) {
-                    resultMap[nameB] = phoneB
-                }
-            }
+        if (mapB[nameA] != null) when (mapB[nameA]) {
+            phoneA -> resultMap[nameA] = phoneA
+            else -> resultMap[nameA] = phoneA + ", " + mapB[nameA]
         }
+        else resultMap[nameA] = phoneA
+    }
+    for ((nameB, phoneB) in mapB) {
+        if (nameB in resultMap) continue
+        else resultMap[nameB] = phoneB
     }
     return resultMap
 }
@@ -193,7 +193,11 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val resultMap = mutableMapOf<String, MutableList<Double>>()
+    for ((name, key) in stockPrices) resultMap.getOrPut(name, { mutableListOf() }) += key
+    return resultMap.mapValues { it.value.sum() / it.value.size }
+}
 
 /**
  * Средняя
