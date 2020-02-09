@@ -136,12 +136,15 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String {
     val existing = setOf(' ', '+', '-', '(', ')')
     val setPhone = (phone.toSet() - existing - setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'))
-    if (setPhone.isNotEmpty()) return ""
+    if (setPhone.isNotEmpty())
+        return ""
     val phoneStr = phone.filter { it in "()" }
     if (phoneStr.isNotEmpty())
-        if (!phoneStr.matches(Regex("""\(\)"""))) return ""
+        if (!phoneStr.matches(Regex("""\(\)""")))
+            return ""
     val phoneTrue = phone.filter { it !in "- " }
-    if (phoneTrue.indexOf('(') - phoneTrue.indexOf(')') == -1) return ""
+    if (phoneTrue.indexOf('(') - phoneTrue.indexOf(')') == -1)
+        return ""
     return phoneTrue.filter { it !in "()" }
 }
 
