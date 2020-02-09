@@ -123,13 +123,15 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var result = 1
-    for (i in 2..n)
-        if (n % i == 0) {
-            result = i
-            break
-        }
-    return result
+    if (n % 2 == 0)
+        return 2
+    var div = 3
+    while (div < sqrt(n * 1.0) + 1) {
+        if (n % div == 0)
+            return div
+        div += 2
+    }
+    return n
 }
 
 /**
@@ -161,14 +163,13 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    if (m == 1 || n == 1) return true
-    for (i in min(n, m)..max(n, m)) {
-        if (isSquare(i)) return true
-    }
-    return false
+    val root = floor(sqrt(m.toDouble()))
+    val square = root.pow(2.0).toLong()
+    val square1 = (root + 1).pow(2.0).toLong()
+    val ml = m.toLong()
+    val nl = n.toLong()
+    return square in ml..nl || square1 in ml..nl
 }
-
-fun isSquare(n: Int): Boolean = sqrt(n.toDouble()) % 1 == 0.0
 
 /**
  * Средняя
@@ -297,23 +298,20 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 
-fun find(n: Int, squareTask: Boolean): Int {
-    var sequenceCount = 0
-    var i = 0
-    while (true) {
+fun find(num: Int, sqOrFib: Boolean): Int {
+    var i = 2
+    var num1 = 1
+    var count = 1
+    while (count < num) {
+        num1 = if (sqOrFib) i * i else fib(i)
+        count += digitNumber(num1)
         i++
-        var k = if (squareTask) {
-            i * i
-        } else fib(i)
-        sequenceCount += digitNumber(k)
-        if (sequenceCount >= n) {
-            while (sequenceCount != n) {
-                k /= 10
-                sequenceCount--
-            }
-            return k % 10
-        }
     }
+    while (count != num) {
+        count--
+        num1 /= 10
+    }
+    return num1 % 10
 }
 
 

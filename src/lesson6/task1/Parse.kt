@@ -4,6 +4,21 @@ package lesson6.task1
 
 import lesson2.task2.daysInMonth
 
+val months = listOf(
+    "января",
+    "февраля",
+    "марта",
+    "апреля",
+    "мая",
+    "июня",
+    "июля",
+    "августа",
+    "сентября",
+    "октября",
+    "ноября",
+    "декабря"
+)
+
 /**
  * Пример
  *
@@ -71,29 +86,15 @@ fun main() {
  * входными данными.
  */
 fun dateStrToDigit(str: String): String {
-    val months = listOf(
-        "января",
-        "февраля",
-        "марта",
-        "апреля",
-        "мая",
-        "июня",
-        "июля",
-        "августа",
-        "сентября",
-        "октября",
-        "ноября",
-        "декабря"
-    )
     val sections = str.split(" ")
-    if (sections.size == 3) {
+    return if (sections.size == 3) {
         val year = sections[2].toIntOrNull()
         val month = months.indexOf(sections[1]) + 1
         val day = sections[0].toIntOrNull()
         if ((day != null && year != null) && ((month in 1..12) && (day in 1..daysInMonth(month, year))))
-            return String.format("%02d.%02d.%d", day, month, year)
-        else return ""
-    } else return ""
+            String.format("%02d.%02d.%d", day, month, year)
+        else ""
+    } else ""
 }
 
 /**
@@ -107,29 +108,15 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    val months = listOf(
-        "января",
-        "февраля",
-        "марта",
-        "апреля",
-        "мая",
-        "июня",
-        "июля",
-        "августа",
-        "сентября",
-        "октября",
-        "ноября",
-        "декабря"
-    )
     val sections = digital.split(".")
-    if ((sections.size == 3) && (sections[1].toIntOrNull() in 1..12)) {
+    return if ((sections.size == 3) && (sections[1].toIntOrNull() in 1..12)) {
         val year = sections[2].toIntOrNull()
         val month = months[sections[1].toInt() - 1]
         val day = sections[0].toIntOrNull()
         if ((day != null && year != null) && (day in 1..daysInMonth(sections[1].toInt(), year)))
-            return String.format("%d %s %d", day, month, year)
-        else return ""
-    } else return ""
+            String.format("%d %s %d", day, month, year)
+        else ""
+    } else ""
 }
 
 /**
@@ -148,8 +135,8 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     val existing = setOf(' ', '+', '-', '(', ')')
-    val set = (phone.toSet() - existing - setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'))
-    if (set.isNotEmpty()) return ""
+    val setPhone = (phone.toSet() - existing - setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'))
+    if (setPhone.isNotEmpty()) return ""
     val phoneStr = phone.filter { it in "()" }
     if (phoneStr.isNotEmpty())
         if (!phoneStr.matches(Regex("""\(\)"""))) return ""

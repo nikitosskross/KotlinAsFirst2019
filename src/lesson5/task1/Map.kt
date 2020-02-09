@@ -144,11 +144,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): MutableMa
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    val aSet = a.toSet()
-    val bSet = b.toSet()
-    return aSet.filter { it in bSet }.toList()
-}
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.toSet().intersect(b.toSet()).toList()
 
 /**
  * Средняя
@@ -170,14 +166,16 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
     val resultMap = mutableMapOf<String, String>()
     for ((nameA, phoneA) in mapA) {
-        if (mapB[nameA] != null) when (mapB[nameA]) {
-            phoneA -> resultMap[nameA] = phoneA
-            else -> resultMap[nameA] = phoneA + ", " + mapB[nameA]
-        }
+        if (mapB[nameA] != null)
+            when (mapB[nameA]) {
+                phoneA -> resultMap[nameA] = phoneA
+                else -> resultMap[nameA] = phoneA + ", " + mapB[nameA]
+            }
         else resultMap[nameA] = phoneA
     }
     for ((nameB, phoneB) in mapB) {
-        if (nameB in resultMap) continue
+        if (nameB in resultMap)
+            continue
         else resultMap[nameB] = phoneB
     }
     return resultMap
