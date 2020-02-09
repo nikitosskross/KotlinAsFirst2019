@@ -260,16 +260,11 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 
-fun getChar(n: Int): String = (n + 87).toChar().toString()
-
-fun convertToString(n: Int, base: Int): String {
-    var result = ""
-    for (dig in convert(n, base)) {
-        val digit = if (dig > 9) getChar(dig) else dig.toString()
-        result += digit
-    }
-    return result
-}
+fun convertToString(n: Int, base: Int): String =
+    convert(n, base).map {
+        if (it > 9) ('a' + it - 10)
+        else '0' + it
+    }.joinToString(separator = "")
 
 /**
  * Средняя
@@ -299,16 +294,11 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * (например, str.toInt(base)), запрещается.
  */
 
-fun getDigit(ch: Char) = (ch - 87).toInt()
-
-fun decimalFromString(str: String, base: Int): Int {
-    val digits = mutableListOf<Int>()
-    for (ch in str.toCharArray()) {
-        val dig = if (ch.isDigit()) ch.toString().toInt() else getDigit(ch)
-        digits.add(dig)
-    }
-    return decimal(digits, base)
-}
+fun decimalFromString(str: String, base: Int): Int =
+    decimal(str.map {
+        if (it <= '9') (it - '0')
+        else it - 'a' + 10
+    }, base)
 
 /**
  * Сложная
