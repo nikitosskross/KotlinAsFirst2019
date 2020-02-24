@@ -134,18 +134,10 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
-    val existing = setOf(' ', '+', '-', '(', ')')
-    val setPhone = (phone.toSet() - existing - setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'))
-    if (setPhone.isNotEmpty())
-        return ""
-    val phoneStr = phone.filter { it in "()" }
-    if (phoneStr.isNotEmpty())
-        if (!phoneStr.matches(Regex("""\(\)""")))
-            return ""
-    val phoneTrue = phone.filter { it !in "- " }
-    if (phoneTrue.indexOf('(') - phoneTrue.indexOf(')') == -1)
-        return ""
-    return phoneTrue.filter { it !in "()" }
+    val result = phone.filter { it != ' ' && it != '-' }
+    if (result.matches(Regex("""(\+\d+)?(\(\d+\))?\d+""")))
+        return result.filter { it != '(' && it != ')' }
+    return ""
 }
 
 /**
@@ -193,7 +185,16 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val setWord = str.toLowerCase().split(" ")
+    var index = 0
+    for (i in 0 until setWord.lastIndex) {
+        if (setWord[i] == setWord[i + 1])
+            return index
+        index += setWord[i].length + 1
+    }
+    return -1
+}
 
 /**
  * Сложная
