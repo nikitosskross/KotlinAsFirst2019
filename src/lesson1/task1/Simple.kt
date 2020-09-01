@@ -71,13 +71,8 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = seconds + minutes * 6
  * Определить длину того же отрезка в метрах (в данном случае 18.98).
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
-fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
-    val v = 4.445
-    val verInSm = vershoks * v
-    val sagInSm = sagenes * v * 48
-    val arcInSm = (arshins * v * 48) / 3
-    return (verInSm + sagInSm + arcInSm) / 100
-}
+fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double =
+    (vershoks + sagenes * 48 + arshins * 48 / 3) * 0.04445
 
 /**
  * Тривиальная
@@ -85,11 +80,8 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
  * Пользователь задает угол в градусах, минутах и секундах (например, 36 градусов 14 минут 35 секунд).
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
-fun angleInRadian(deg: Int, min: Int, sec: Int): Double {
-    val minInDeg = min / 60.0
-    val secInDeg = sec / 3600.0
-    return toRadians(minInDeg + secInDeg + deg)
-}
+fun angleInRadian(deg: Int, min: Int, sec: Int): Double =
+    deg * PI / 180 + min * PI / (180 * 60) + sec * PI / (180 * 3600)
 
 /**
  * Тривиальная
@@ -97,7 +89,7 @@ fun angleInRadian(deg: Int, min: Int, sec: Int): Double {
  * Найти длину отрезка, соединяющего точки на плоскости с координатами (x1, y1) и (x2, y2).
  * Например, расстояние между (3, 0) и (0, 4) равно 5
  */
-fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt(sqr(x1 - x2) + sqr(y1 - y2))
+fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt(sqr(x2 - x1) + sqr(y2 - y1))
 
 
 /**
@@ -106,7 +98,7 @@ fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt(s
  * Пользователь задает целое число, большее 100 (например, 3801).
  * Определить третью цифру справа в этом числе (в данном случае 8).
  */
-fun thirdDigit(number: Int): Int = number % 1000 / 100
+fun thirdDigit(number: Int): Int = number / 100 % 10
 
 /**
  * Простая
